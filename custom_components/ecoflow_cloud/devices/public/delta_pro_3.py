@@ -87,16 +87,40 @@ class DeltaPro3(BaseDevice):
                                     lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgDevStandbyTime": value}}),
         ]
 
+    def _prepare_data_set_topic(self, raw_data: bytes):
+        from custom_components.ecoflow_cloud.devices.data_holder import PreparedData
+        data = self._prepare_data(raw_data)
+        return PreparedData(None, data, data)
+
+    def _prepare_data_set_reply_topic(self, raw_data: bytes):
+        from custom_components.ecoflow_cloud.devices.data_holder import PreparedData
+        data = self._prepare_data(raw_data)
+        return PreparedData(None, data, data)
 
     def _prepare_data(self, raw_data: bytes) -> dict[str, Any]:
         res = super()._prepare_data(raw_data)
         
         new_params = {}
-        if "param" in res:
-            new_params.update(res.pop("param"))
-        if "params" in res:
-            new_params.update(res.get("params", {}))
+        
+        # 1. Extract from known wrapper keys
+        for wrapper in ["param", "params", "quotas", "data", "quotaMap"]:
+            if wrapper in res:
+                p = res.get(wrapper)
+                if isinstance(p, dict):
+                    new_params.update(p)
+                elif isinstance(p, list):
+                    for item in p:
+                        if isinstance(item, dict):
+                            new_params.update(item)
+                
+        # 2. Extract flat keys
+        metadata_keys = {"cmdFunc", "cmdId", "sn", "typeCode", "timestamp", "version", "id", "from", "seq", "topic", "data", "quotas", "operateType", "moduleType", "errcode", "message"}
+        for k, v in list(res.items()):
+            if k not in metadata_keys and k not in ["param", "params", "quotas", "data", "quotaMap"]:
+                if not isinstance(v, (dict, list)):
+                    new_params[k] = v
 
+        # 3. Map cfg to cms
         mapping = {
             "cfgMaxChgSoc": "cmsMaxChgSoc",
             "cfgMinDsgSoc": "cmsMinDsgSoc",
