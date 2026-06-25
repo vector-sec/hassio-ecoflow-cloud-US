@@ -47,41 +47,41 @@ class DeltaPro3(BaseDevice):
     def numbers(self, client: EcoflowApiClient) -> list[BaseNumberEntity]:
         return [
             MaxBatteryLevelEntity(client, self, "cmsMaxChgSoc", const.MAX_CHARGE_LEVEL, 50, 100,
-                                  lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgMaxChgSoc": value}}),
+                                  lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgMaxChgSoc": value}}),
             MinBatteryLevelEntity(client, self, "cmsMinDsgSoc", const.MIN_DISCHARGE_LEVEL, 0, 30,
-                                  lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgMinDsgSoc": value}}),
+                                  lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgMinDsgSoc": value}}),
             MinGenStartLevelEntity(client, self, "cmsOilOnSoc", const.GEN_AUTO_START_LEVEL, 0, 30,
-                                   lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgCmsOilOnSoc": value}}),
+                                   lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgCmsOilOnSoc": value}}),
             MaxGenStopLevelEntity(client, self, "cmsOilOffSoc", const.GEN_AUTO_STOP_LEVEL, 50, 100,
-                                  lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgCmsOilOffSoc": value}}),
+                                  lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgCmsOilOffSoc": value}}),
         ]
 
     def switches(self, client: EcoflowApiClient) -> list[BaseSwitchEntity]:
         return [
             BeeperEntity(client, self, "enBeep", const.BEEPER,
-                         lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgBeepEn": value}}),
+                         lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgBeepEn": value}}),
             EnabledEntity(client, self, "llcGFCIFlag", "GFCI",
-                          lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgLlcGFCIFlag": value}}),
+                          lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgLlcGFCIFlag": value}}),
             EnabledEntity(client, self, "xboostEn", const.XBOOST_ENABLED,
-                          lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgXboostEn": value}}),
+                          lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgXboostEn": value}}),
             EnabledEntity(client, self, "flowInfoAcHvOut", "AC Out HV",
-                          lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgHvAcOutOpen": value}}),
+                          lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgHvAcOutOpen": value}}),
             EnabledEntity(client, self, "flowInfoAcLvOut", "AC Out LV",
-                          lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgLvAcOutOpen": value}}),
+                          lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgLvAcOutOpen": value}}),
             EnabledEntity(client, self, "flowInfo12v", "12V DC Out",
-                          lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgDc12vOutOpen": value}}),
+                          lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgDc12vOutOpen": value}}),
             EnabledEntity(client, self, "acEnergySavingOpen", "AC Energy Saving",
-                          lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgAcEnergySavingOpen": value}}),
+                          lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgAcEnergySavingOpen": value}}),
         ]
 
     def selects(self, client: EcoflowApiClient) -> list[BaseSelectEntity]:
         return [
             TimeoutDictSelectEntity(client, self, "acStandbyTime", const.AC_TIMEOUT, const.AC_TIMEOUT_OPTIONS,
-                                    lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgAcStandbyTime": value}}),
+                                    lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgAcStandbyTime": value}}),
             TimeoutDictSelectEntity(client, self, "dcStandbyTime", const.DC_TIMEOUT, const.DC_TIMEOUT_OPTIONS,
-                                    lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgDcStandbyTime": value}}),
+                                    lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgDcStandbyTime": value}}),
             TimeoutDictSelectEntity(client, self, "screenOffTime", const.SCREEN_TIMEOUT, const.SCREEN_TIMEOUT_OPTIONS,
-                                    lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgScreenOffTime": value}}),
+                                    lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgScreenOffTime": value}}),
             TimeoutDictSelectEntity(client, self, "devStandbyTime", const.UNIT_TIMEOUT, const.UNIT_TIMEOUT_OPTIONS,
-                                    lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "params": {"cfgDevStandbyTime": value}}),
+                                    lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgDevStandbyTime": value}}),
         ]
