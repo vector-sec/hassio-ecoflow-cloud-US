@@ -14,7 +14,8 @@ from .internal import (delta2 as internal_delta2,
                        powerstream as internal_powerstream,
                        glacier as internal_glacier,
                        wave2 as internal_wave2, 
-                       wave3 as internal_wave3,)
+                       wave3 as internal_wave3,
+                       delta_pro_3 as internal_delta_pro_3,)
 from .public import (delta_pro as public_delta_pro,
                      delta2 as public_delta2,
                      delta2_max as public_delta2_max,
@@ -26,6 +27,7 @@ from .public import (delta_pro as public_delta_pro,
                      wave3 as public_wave3,
                      delta_pro_ultra as public_delta_pro_ultra,
                      smart_home_panel_2 as public_smart_home_panel_2,
+                     delta_pro_3 as public_delta_pro_3,
                      )
 from ..devices import BaseDevice, DiagnosticDevice
 
@@ -45,6 +47,7 @@ devices: OrderedDict[str, Type[BaseDevice]] = OrderedDict[str, Type[BaseDevice]]
     "GLACIER": internal_glacier.Glacier,
     "WAVE_2": internal_wave2.Wave2,
     "WAVE_3": internal_wave3.Wave3,
+    "DELTA_PRO_3": internal_delta_pro_3.DeltaPro3,
     "DIAGNOSTIC": DiagnosticDevice
 })
 
@@ -60,5 +63,6 @@ device_by_product: OrderedDict[str, Type[BaseDevice]] = OrderedDict[str, Type[Ba
     "Wave 3": public_wave3.Wave3,
     "DELTA Pro Ultra": public_delta_pro_ultra.DeltaProUltra,
     "Smart Home Panel 2": public_smart_home_panel_2.SmartHomePanel2,
+    "DELTA Pro 3": public_delta_pro_3.DeltaPro3,
     "Diagnostic": DiagnosticDevice
 })
