@@ -1,3 +1,4 @@
+from typing import Any
 from custom_components.ecoflow_cloud.api import EcoflowApiClient
 from custom_components.ecoflow_cloud.devices import const, BaseDevice
 from custom_components.ecoflow_cloud.entities import BaseSensorEntity, BaseNumberEntity, BaseSwitchEntity, BaseSelectEntity
@@ -85,3 +86,38 @@ class DeltaPro3(BaseDevice):
             TimeoutDictSelectEntity(client, self, "devStandbyTime", const.UNIT_TIMEOUT, const.UNIT_TIMEOUT_OPTIONS,
                                     lambda value: {"sn": self.device_info.sn, "cmdId": 17, "cmdFunc": 254, "dirDest": 1, "dirSrc": 1, "dest": 2, "needAck": True, "params": {"cfgDevStandbyTime": value}}),
         ]
+
+
+    def _prepare_data(self, raw_data: bytes) -> dict[str, Any]:
+        res = super()._prepare_data(raw_data)
+        
+        new_params = {}
+        if "param" in res:
+            new_params.update(res.pop("param"))
+        if "params" in res:
+            new_params.update(res.get("params", {}))
+
+        mapping = {
+            "cfgMaxChgSoc": "cmsMaxChgSoc",
+            "cfgMinDsgSoc": "cmsMinDsgSoc",
+            "cfgCmsOilOnSoc": "cmsOilOnSoc",
+            "cfgCmsOilOffSoc": "cmsOilOffSoc",
+            "cfgBeepEn": "enBeep",
+            "cfgLlcGFCIFlag": "llcGFCIFlag",
+            "cfgXboostEn": "xboostEn",
+            "cfgHvAcOutOpen": "flowInfoAcHvOut",
+            "cfgLvAcOutOpen": "flowInfoAcLvOut",
+            "cfgDc12vOutOpen": "flowInfo12v",
+            "cfgAcEnergySavingOpen": "acEnergySavingOpen",
+            "cfgAcStandbyTime": "acStandbyTime",
+            "cfgDcStandbyTime": "dcStandbyTime",
+            "cfgScreenOffTime": "screenOffTime",
+            "cfgDevStandbyTime": "devStandbyTime"
+        }
+        
+        for cfg_k, cms_k in mapping.items():
+            if cfg_k in new_params:
+                new_params[cms_k] = new_params[cfg_k]
+
+        res["params"] = new_params
+        return res
